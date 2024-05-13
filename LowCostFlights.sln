@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LowCostFlights.Server", "LowCostFlights.Server\LowCostFlights.Server.csproj", "{BAF9E0E5-63B1-4495-9B71-B16022FA7D98}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "lowcostflights.client", "lowcostflights.client\lowcostflights.client.esproj", "{89EDA7B4-1487-4486-BD99-77EAD766CF01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAF9E0E5-63B1-4495-9B71-B16022FA7D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF9E0E5-63B1-4495-9B71-B16022FA7D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF9E0E5-63B1-4495-9B71-B16022FA7D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF9E0E5-63B1-4495-9B71-B16022FA7D98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89EDA7B4-1487-4486-BD99-77EAD766CF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89EDA7B4-1487-4486-BD99-77EAD766CF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89EDA7B4-1487-4486-BD99-77EAD766CF01}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{89EDA7B4-1487-4486-BD99-77EAD766CF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89EDA7B4-1487-4486-BD99-77EAD766CF01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89EDA7B4-1487-4486-BD99-77EAD766CF01}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3DC573A1-D133-4342-960D-50346DCF54BF}
+	EndGlobalSection
+EndGlobal
