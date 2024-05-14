@@ -5,7 +5,7 @@
         public required string DepartureAirport { get; set; }
         public required string ArrivalAirport { get; set; }
         public required string DepartureDate { get; set; }
-        public required string ReturnDate { get; set; }
+        public string? ReturnDate { get; set; }
         public int NumberOfStopsOutbound { get; set; }
         public int NumberOfStopsInbound { get; set; }
         public int NumberOfPassengers { get; set; }

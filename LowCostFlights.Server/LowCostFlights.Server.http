@@ -1,6 +1,6 @@
 @LowCostFlights.Server_HostAddress = http://localhost:5132
 
-GET {{LowCostFlights.Server_HostAddress}}/api/flightoffers/test/
+GET {{LowCostFlights.Server_HostAddress}}/api/flightoffers/get
 Accept: application/json
 
 ###

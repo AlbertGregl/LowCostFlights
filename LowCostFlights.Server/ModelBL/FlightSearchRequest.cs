@@ -5,9 +5,10 @@
         public required string OriginLocationCode { get; set; }
         public required string DestinationLocationCode { get; set; }
         public required string DepartureDate { get; set; }
-        public required string ReturnDate { get; set; }
+        public string? ReturnDate { get; set; }
         public int Adults { get; set; }
-        public bool NonStop { get; set; }
+        public string? NonStop { get; set; }
         public required string CurrencyCode { get; set; }
+        public int MaxNumberOfResults { get; set; }
     }
 }

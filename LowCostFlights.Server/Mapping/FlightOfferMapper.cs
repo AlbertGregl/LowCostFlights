@@ -1,38 +1,61 @@
 ﻿using LowCostFlights.Server.ModelBL;
 using LowCostFlights.Server.Model;
-
+using System.Globalization;
 namespace LowCostFlights.Server.Mapping
 {
     public static class FlightOfferMapper
     {
         public static FlightOfferResponse MapToResponse(FlightOffer flightOffer, FlightSearchRequest request)
         {
-            var response = new FlightOfferResponse();
+            var outboundFlights = new List<FlightDetails>();
+            var inboundFlights = new List<FlightDetails>();
 
             foreach (var datum in flightOffer.Data)
             {
-                var outboundItinerary = datum.Itineraries?.FirstOrDefault();
-                var inboundItinerary = datum.Itineraries?.LastOrDefault();
+                var outboundItinerary = datum.Itineraries.FirstOrDefault();
+                var inboundItinerary = datum.Itineraries.LastOrDefault();
 
-                if (outboundItinerary == null || inboundItinerary == null)
-                    throw new InvalidOperationException("Invalid itinerary data");
-
-                response.Flights.Add(new FlightDetails
+                // Process outbound flights
+                if (outboundItinerary != null)
                 {
-                    DepartureAirport = outboundItinerary.Segments?.FirstOrDefault()?.Departure?.IataCode ?? "Unknown",
-                    ArrivalAirport = inboundItinerary.Segments?.LastOrDefault()?.Arrival?.IataCode ?? "Unknown",
-                    DepartureDate = outboundItinerary.Segments?.FirstOrDefault()?.Departure?.At.ToString() ?? "Unknown date",
-                    ReturnDate = inboundItinerary.Segments?.LastOrDefault()?.Arrival?.At.ToString() ?? "Unknown date",
-                    NumberOfStopsOutbound = outboundItinerary.Segments?.Length - 1 ?? 0,
-                    NumberOfStopsInbound = inboundItinerary.Segments?.Length - 1 ?? 0,
-                    NumberOfPassengers = request.Adults,
-                    Currency = request.CurrencyCode,
-                    TotalPrice = datum?.Price?.GrandTotal ?? 0
-                });
+                    foreach (var segment in outboundItinerary.Segments)
+                    {
+                        var flightDetails = FlightDetailsHelper.CreateFlightDetailsFromSegment(
+                            segment,
+                            outboundItinerary,
+                            request.Adults,
+                            request.CurrencyCode,
+                            datum.Price?.GrandTotal ?? 0,
+                            true // true indicates outbound
+                        );
+                        outboundFlights.Add(flightDetails);
+                    }
+                }
+
+                // Process inbound flights
+                if (inboundItinerary != null)
+                {
+                    foreach (var segment in inboundItinerary.Segments)
+                    {
+                        var flightDetails = FlightDetailsHelper.CreateFlightDetailsFromSegment(
+                            segment,
+                            inboundItinerary,
+                            request.Adults,
+                            request.CurrencyCode,
+                            datum.Price?.GrandTotal ?? 0,
+                            false // false indicates inbound
+                        );
+                        inboundFlights.Add(flightDetails);
+                    }
+                }
             }
 
-            return response;
+
+            var combinedFlights = outboundFlights.Concat(inboundFlights)
+                //.OrderBy(f => f.DepartureDate)
+                .ToList();
+
+            return new FlightOfferResponse { Flights = combinedFlights };
         }
     }
-
 }

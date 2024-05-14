@@ -43,7 +43,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/api/flightoffers/test/': {
+            '^/api/flightoffers/get': {
                 target,
                 secure: false
             }
