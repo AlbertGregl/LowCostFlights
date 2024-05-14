@@ -1,6 +1,7 @@
 ﻿using LowCostFlights.Server.Mapping;
 using LowCostFlights.Server.Model;
 using LowCostFlights.Server.ModelBL;
+using LowCostFlights.Server.Service;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,16 +14,19 @@ namespace LowCostFlights.Server.Controllers
         private readonly ILogger<FlightOffersController> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
-
-        const string BASE_URL = "https://test.api.amadeus.com/v2/shopping/flight-offers";
-
+        private readonly ITokenService _tokenService;
 
 
-        public FlightOffersController(ILogger<FlightOffersController> logger, IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public FlightOffersController(
+            ILogger<FlightOffersController> logger, 
+            IHttpClientFactory httpClientFactory, 
+            IConfiguration configuration, 
+            ITokenService tokenService)
         {
             _logger = logger;
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _tokenService = tokenService;
         }
 
         [HttpGet("/")]
@@ -37,10 +41,14 @@ namespace LowCostFlights.Server.Controllers
         {
             _logger.LogInformation($"Fetching flight offers for {request.OriginLocationCode} to {request.DestinationLocationCode}");
 
-            var apiKey = _configuration["AmadeusAPI:ApiKey"];
+            // Get the API
+            var token = await _tokenService.GetTokenAsync();
+
+            var api_url = _configuration["AmadeusAPI:ApiBaseUrl"] + _configuration["AmadeusAPI:ApiFlightOffersUrl"];
+
 
             var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             string queryString = $"?originLocationCode={request.OriginLocationCode}&destinationLocationCode={request.DestinationLocationCode}&departureDate={request.DepartureDate}&adults={request.Adults}&nonStop={request.NonStop}&currencyCode={request.CurrencyCode}&max={request.MaxNumberOfResults}";
             if (!string.IsNullOrEmpty(request.ReturnDate))
@@ -48,7 +56,7 @@ namespace LowCostFlights.Server.Controllers
                 queryString += $"&returnDate={request.ReturnDate}";
             }
 
-            string fullUrl = BASE_URL + queryString;
+            string fullUrl = api_url + queryString;
 
             try
             {
@@ -65,9 +73,6 @@ namespace LowCostFlights.Server.Controllers
                     }
 
                     var mappedResponse = FlightOfferMapper.MapToResponse(flightOffers, request);
-
-                    // sort the flights by departure date
-                    //mappedResponse.Flights = mappedResponse.Flights.OrderBy(f => f.DepartureDate).ToList();
 
                     return Ok(mappedResponse);
                 }

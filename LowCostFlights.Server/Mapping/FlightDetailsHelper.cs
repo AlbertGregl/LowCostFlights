@@ -20,11 +20,11 @@ namespace LowCostFlights.Server.Mapping
 
             if (isOutbound)
             {
-                flightDetails.NumberOfStopsOutbound = itinerary.Segments.Length;
+                flightDetails.NumberOfStopsOutbound = itinerary.Segments.Length - 1;
             }
             else
             {
-                flightDetails.NumberOfStopsInbound = itinerary.Segments.Length;
+                flightDetails.NumberOfStopsInbound = itinerary.Segments.Length - 1;
             }
 
             return flightDetails;

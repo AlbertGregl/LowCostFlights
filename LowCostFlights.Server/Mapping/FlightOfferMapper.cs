@@ -50,10 +50,7 @@ namespace LowCostFlights.Server.Mapping
                 }
             }
 
-
-            var combinedFlights = outboundFlights.Concat(inboundFlights)
-                //.OrderBy(f => f.DepartureDate)
-                .ToList();
+            var combinedFlights = outboundFlights.Concat(inboundFlights).ToList();
 
             return new FlightOfferResponse { Flights = combinedFlights };
         }
