@@ -1,8 +1,51 @@
+import { useState } from 'react';
+import AsyncSelect from 'react-select/async';
 import PropTypes from 'prop-types';
 import styles from './FlightSearchForm.module.css';
 import Currencies from '../constants/currencies';
+import { fetchAirportOptions } from '../services/apiService';
 
 const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
+
+    const [originOptions, setOriginOptions] = useState([]);
+    const [destinationOptions, setDestinationOptions] = useState([]);
+
+    const loadOptions = async (inputValue, fieldName) => {
+        if (inputValue.length < 2) return [];
+        try {
+            const airportsData = await fetchAirportOptions(inputValue, fieldName);
+            const options = airportsData.map(airport => ({
+                value: airport.iataCode,
+                label: `(${airport.iataCode}) - ${airport.name}`
+            }));
+            if (fieldName === 'originLocationCode') {
+                setOriginOptions(options);
+            } else {
+                setDestinationOptions(options);
+            }
+            return options;
+        } catch (error) {
+            console.error('Error fetching airport data:', error);
+            inputValue = inputValue.toUpperCase();
+            handleAutoInputChange(inputValue, fieldName);
+        }
+    };
+
+    const handleAutoInputChange = (newValue, fieldName) => {
+        let valueToUpdate = '';
+
+        if (typeof newValue === 'object' && newValue !== null) {
+            valueToUpdate = newValue.value || '';
+        } else {
+            valueToUpdate = newValue || '';
+        }
+
+        setSearchParams(prev => ({
+            ...prev,
+            [fieldName]: valueToUpdate
+        }));
+    };
+
     const handleInputChange = (event) => {
         const { name, value, type, checked } = event.target;
         setSearchParams(prev => ({
@@ -11,31 +54,42 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
         }));
     };
 
+
     return (
         <form onSubmit={handleSubmit}>
             <div className={styles.formRow}>
-                <label className={styles.formLabel}>Origin</label>
-                <input
-                    className={styles.formInput}
+                <label className={styles.formLabel}>Origin [IATA] code</label>
+                <AsyncSelect
                     id="originLocationCode"
-                    type="text"
                     name="originLocationCode"
-                    value={searchParams.originLocationCode}
-                    onChange={handleInputChange}
-                    placeholder="Origin"
+                    cacheOptions
+                    defaultOptions
+                    loadOptions={(inputValue) => loadOptions(inputValue, 'originLocationCode')}
+                    onChange={(newValue) => handleAutoInputChange(newValue, 'originLocationCode')}
+                    value={{
+                        value: searchParams.originLocationCode,
+                        label: searchParams.originLocationCode ? `${searchParams.originLocationCode}` : ''
+                    }}
+                    options={originOptions}
+                    placeholder="Select or type origin"
                     required
                 />
             </div>
             <div className={styles.formRow}>
-                <label className={styles.formLabel}>Destination</label>
-                <input
-                    className={styles.formInput}
+                <label className={styles.formLabel}>Destination [IATA] code</label>
+                <AsyncSelect
                     id="destinationLocationCode"
-                    type="text"
                     name="destinationLocationCode"
-                    value={searchParams.destinationLocationCode}
-                    onChange={handleInputChange}
-                    placeholder="Destination"
+                    cacheOptions
+                    defaultOptions
+                    loadOptions={(inputValue) => loadOptions(inputValue, 'destinationLocationCode')}
+                    onChange={(newValue) => handleAutoInputChange(newValue, 'destinationLocationCode')}
+                    value={{
+                        value: searchParams.destinationLocationCode,
+                        label: searchParams.destinationLocationCode ? `${searchParams.destinationLocationCode}` : ''
+                    }}
+                    options={destinationOptions}
+                    placeholder="Select or type destination"
                     required
                 />
             </div>
@@ -91,7 +145,7 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
                 </div>
             </div>
             <div className={styles.formRow}>
-                <label className={styles.formLabel}>Currency Code</label>
+                <label className={styles.formLabel}>Currency</label>
                 <select
                     className={styles.formInput}
                     id="currencyCode"

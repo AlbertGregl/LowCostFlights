@@ -16,3 +16,7 @@ export const saveToStorage = (key, data) => {
         console.error('Error saving to LocalStorage', error);
     }
 };
+
+export const clearStorage = () => {
+    localStorage.clear();
+}

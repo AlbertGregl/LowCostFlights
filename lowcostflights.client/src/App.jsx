@@ -30,7 +30,6 @@ function App() {
             returnDate: searchParams.returnDate ? formatDateForAPI(searchParams.returnDate) : '',
             nonStop: searchParams.nonStop ? 'true' : 'false',
         };
-        console.log("Submitting with params:", params);
 
         const queryString = new URLSearchParams(params).toString();
         const cachedData = loadFromStorage(queryString);

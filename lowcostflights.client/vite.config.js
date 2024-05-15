@@ -46,6 +46,10 @@ export default defineConfig({
             '^/api/flightoffers/get': {
                 target,
                 secure: false
+            },
+            '^/api/airports/get': {
+                target,
+                secure: false
             }
         },
         port: 5173,
