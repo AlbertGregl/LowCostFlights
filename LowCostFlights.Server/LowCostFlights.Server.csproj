@@ -23,4 +23,8 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\home.html" />
+  </ItemGroup>
+
 </Project>

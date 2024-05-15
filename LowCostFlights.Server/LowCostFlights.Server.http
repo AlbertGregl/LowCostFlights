@@ -2,5 +2,7 @@
 
 GET {{LowCostFlights.Server_HostAddress}}/api/flightoffers/get
 Accept: application/json
+###
 
+GET {{LowCostFlights.Server_HostAddress}}/api/
 ###

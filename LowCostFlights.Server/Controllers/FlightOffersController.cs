@@ -34,13 +34,8 @@ namespace LowCostFlights.Server.Controllers
         {
             _logger.LogInformation($"Fetching flight offers for {request.OriginLocationCode} to {request.DestinationLocationCode}");
 
-            // Get the API token
-            var token = await _tokenService.GetTokenAsync();
-
-            var api_url = _configuration["AmadeusAPI:ApiBaseUrl"] + _configuration["AmadeusAPI:ApiFlightOffersUrl"];
-
-
             var client = _httpClientFactory.CreateClient();
+            var token = await _tokenService.GetTokenAsync();
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             string queryString = $"?originLocationCode={request.OriginLocationCode}&destinationLocationCode={request.DestinationLocationCode}&departureDate={request.DepartureDate}&adults={request.Adults}&nonStop={request.NonStop}&currencyCode={request.CurrencyCode}&max={request.MaxNumberOfResults}";
@@ -49,6 +44,7 @@ namespace LowCostFlights.Server.Controllers
                 queryString += $"&returnDate={request.ReturnDate}";
             }
 
+            var api_url = _configuration["AmadeusAPI:ApiBaseUrl"] + _configuration["AmadeusAPI:ApiFlightOffersUrl"];
             string fullUrl = api_url + queryString;
 
             try
