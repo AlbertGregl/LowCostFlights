@@ -3,6 +3,7 @@ import FlightSearchForm from './components/FlightSearchForm';
 import FlightTable from './components/FlightsTable';
 import { fetchFlightOffers } from './services/apiService';
 import { formatDateForAPI } from './utils/dateUtils';
+import { loadFromStorage, saveToStorage } from './utils/storageUtils';
 import './App.css';
 
 function App() {
@@ -27,8 +28,18 @@ function App() {
             nonStop: searchParams.nonStop ? 'true' : 'false',
         };
 
+        const queryString = new URLSearchParams(params).toString();
+        const cachedData = loadFromStorage(queryString);
+
+        if (cachedData) {
+            console.log('Using cached data:', cachedData);
+            setFlightOffers(cachedData.flights || []);
+            return;
+        }
+
         try {
             const data = await fetchFlightOffers(params);
+            saveToStorage(queryString, data);
             setFlightOffers(data.flights || []);
         } catch (error) {
             console.error('Failed to fetch data:', error);
