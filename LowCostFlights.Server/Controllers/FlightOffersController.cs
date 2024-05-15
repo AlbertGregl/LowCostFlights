@@ -29,19 +29,12 @@ namespace LowCostFlights.Server.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpGet("/")]
-        public IActionResult Get()
-        {
-            return Ok("Welcome to LowCostFlights API");
-        }
-
-
         [HttpGet("get")]
         public async Task<IActionResult> GetFlightOffers([FromQuery] FlightSearchRequest request)
         {
             _logger.LogInformation($"Fetching flight offers for {request.OriginLocationCode} to {request.DestinationLocationCode}");
 
-            // Get the API
+            // Get the API token
             var token = await _tokenService.GetTokenAsync();
 
             var api_url = _configuration["AmadeusAPI:ApiBaseUrl"] + _configuration["AmadeusAPI:ApiFlightOffersUrl"];

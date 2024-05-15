@@ -1,0 +1,77 @@
+form  {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 20px;
+    width: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.formRow {
+    width: auto;
+}
+
+.formLabel {
+    grid-column: span 1;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.formInput {
+    width: 100%;
+    grid-column: span 1;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.formCheckbox {
+    width: 100%;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+.submitButton {
+    width: 100%;
+    grid-column: 1 / -1;
+    background-color: aquamarine;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    color: #171717;
+}
+
+.submitButton:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .formContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .submitButton {
+        grid-column: 1 / -1;
+    }
+
+    .fullWidth {
+        grid-column: 1 / -1;
+    }
+}
