@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import styles from './FlightSearchForm.module.css';
+import Currencies from '../constants/currencies';
 
 const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
     const handleInputChange = (event) => {
@@ -22,6 +23,7 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
                     value={searchParams.originLocationCode}
                     onChange={handleInputChange}
                     placeholder="Origin"
+                    required
                 />
             </div>
             <div className={styles.formRow}>
@@ -34,6 +36,7 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
                     value={searchParams.destinationLocationCode}
                     onChange={handleInputChange}
                     placeholder="Destination"
+                    required
                 />
             </div>
             <div className={styles.formRow}>
@@ -45,6 +48,7 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
                     name="departureDate"
                     value={searchParams.departureDate}
                     onChange={handleInputChange}
+                    required
                 />
             </div>
             <div className={styles.formRow}>
@@ -68,8 +72,8 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
                     name="adults"
                     value={searchParams.adults}
                     onChange={handleInputChange}
+                    required
                     min="1"
-                    max="250"
                 />
             </div>
             <div className={styles.formRow}>
@@ -86,21 +90,21 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
                     </label>
                 </div>
             </div>
-
             <div className={styles.formRow}>
                 <label className={styles.formLabel}>Currency Code</label>
-                <input
+                <select
                     className={styles.formInput}
                     id="currencyCode"
-                    type="text"
                     name="currencyCode"
                     value={searchParams.currencyCode}
                     onChange={handleInputChange}
-                    placeholder="Currency Code"
-                />
+                    required
+                >
+                    <option value={Currencies.USD}>{Currencies.USD}</option>
+                    <option value={Currencies.EUR}>{Currencies.EUR}</option>
+                    <option value={Currencies.HRK}>{Currencies.HRK}</option>
+                </select>
             </div>
-
-
             <div className={styles.formRow}>
                 <label className={styles.formLabel}>Max Number of Results</label>
                 <input
@@ -110,7 +114,9 @@ const FlightSearchForm = ({ searchParams, setSearchParams, handleSubmit }) => {
                     name="maxNumberOfResults"
                     value={searchParams.maxNumberOfResults}
                     onChange={handleInputChange}
+                    required
                     min="1"
+                    max="250"
                 />
 
             </div>

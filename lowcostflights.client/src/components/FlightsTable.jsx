@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const FlightTable = ({ flights }) => {
     if (flights.length === 0) {
-        return <p><em>Loading... Please refresh.</em></p>;
+        return <p><em>&#9752;</em></p>;
     }
 
     return (

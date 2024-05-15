@@ -17,3 +17,29 @@ th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.loader {
+    font-size: 24px;
+    height: 30px;
+    line-height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+@keyframes flyRight {
+    0% {
+        left: -50px;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.loader::before {
+    content: '\2708';
+    position: absolute;
+    animation: flyRight 5s linear infinite;
+}
