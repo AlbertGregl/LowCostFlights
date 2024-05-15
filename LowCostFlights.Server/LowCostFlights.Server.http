@@ -6,3 +6,7 @@ Accept: application/json
 
 GET {{LowCostFlights.Server_HostAddress}}/api/
 ###
+
+GET {{LowCostFlights.Server_HostAddress}}/api/airports/get
+Accept: application/json
+###
