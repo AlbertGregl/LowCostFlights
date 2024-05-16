@@ -1,3 +1,5 @@
+#### This is a ReactJS client and .NET Core server application designed for searching flight offers and prices.
+
 In the file `LowCostFlights.Server/appsettings.json`, the `ApiKey` and `ApiSecret` are provided as examples.
 <br>
 These values must be changed to new, correct values from (https://developers.amadeus.com/).
